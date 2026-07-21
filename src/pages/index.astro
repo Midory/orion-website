@@ -1,0 +1,145 @@
+---
+import '../styles/global.css';
+
+const features = [
+  ['01', 'Une salle lisible', 'Visualisez les tables, les zones et l’avancement du service sans chercher l’information.'],
+  ['02', 'Une commande fluide', 'Produits, formules, cuissons et accompagnements restent accessibles en quelques gestes.'],
+  ['03', 'Un catalogue maîtrisé', 'Organisez votre offre, rendez un produit indisponible et adaptez la carte au rythme de la journée.'],
+];
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="Orion, la caisse locale conçue pour le rythme des brasseries et restaurants." />
+    <meta name="theme-color" content="#0d0f0e" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:title" content="Orion — La caisse qui suit le service" />
+    <meta property="og:description" content="Une caisse locale, rapide et lisible pour les équipes de restauration." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/images/orion-brasserie-hero.png" />
+    <title>Orion — La caisse qui suit le service</title>
+  </head>
+  <body>
+    <header class="site-header" data-header>
+      <a class="brand" href="#top" aria-label="Orion, accueil">
+        <span class="brand-mark" aria-hidden="true">O</span>
+        <span>ORION</span>
+      </a>
+      <nav aria-label="Navigation principale">
+        <a href="#produit">Le produit</a>
+        <a href="#terrain">Sur le terrain</a>
+        <a class="nav-cta" href="#contact">Demander une démo</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <img src="/images/orion-brasserie-hero.png" alt="Un serveur utilise Orion pendant le service dans une brasserie animée" fetchpriority="high" />
+        <div class="hero-shade"></div>
+        <div class="hero-content">
+          <p class="eyebrow hero-kicker">Caisse locale · restauration</p>
+          <h1 id="hero-title">Le service avance.<br />La caisse suit.</h1>
+          <p class="hero-copy">Orion donne aux équipes une vue claire de la salle et une prise de commande sans friction, même au cœur du coup de feu.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#contact">Voir Orion en action <span aria-hidden="true">↗</span></a>
+            <a class="text-link" href="#produit">Découvrir le produit <span aria-hidden="true">↓</span></a>
+          </div>
+        </div>
+        <p class="hero-note">Pensé avec les équipes de terrain</p>
+      </section>
+
+      <section class="statement reveal" id="produit">
+        <p class="eyebrow">Concentré sur l’essentiel</p>
+        <h2>Moins d’écran.<br /><em>Plus de service.</em></h2>
+        <p>Orion organise l’information comme votre équipe travaille : la salle d’abord, la table ensuite, la commande au bon moment.</p>
+      </section>
+
+      <section class="workflow" id="terrain">
+        <div class="workflow-heading reveal">
+          <p class="eyebrow">Un même fil, du premier couvert à l’envoi</p>
+          <h2>La salle reste<br />en mouvement.</h2>
+        </div>
+        <div class="service-line" aria-label="Déroulement du service">
+          <div class="service-step reveal"><span>01</span><strong>Choisir une table</strong><p>Le plan de salle montre immédiatement où agir.</p></div>
+          <div class="service-step reveal"><span>02</span><strong>Prendre la commande</strong><p>Chaque choix métier est disponible sans surcharger l’écran.</p></div>
+          <div class="service-step reveal"><span>03</span><strong>Envoyer le tour</strong><p>La cuisine reçoit une commande claire et structurée.</p></div>
+          <div class="service-step reveal"><span>04</span><strong>Garder le cap</strong><p>L’état de chaque table reste visible par toute l’équipe.</p></div>
+        </div>
+      </section>
+
+      <section class="local-proof reveal">
+        <div>
+          <p class="eyebrow">Local par conception</p>
+          <h2>Votre service ne devrait pas dépendre d’un nuage.</h2>
+        </div>
+        <div class="proof-copy">
+          <p>Orion fonctionne au sein de votre établissement. Les postes communiquent sur votre réseau local et l’activité continue de rester sous votre contrôle.</p>
+          <ul>
+            <li><span>●</span> Accès rapide depuis les postes du restaurant</li>
+            <li><span>●</span> Données séparées par établissement</li>
+            <li><span>●</span> Interface pensée pour le tactile</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="features">
+        <p class="eyebrow reveal">Ce qui change au quotidien</p>
+        <div class="feature-list">
+          {features.map(([number, title, copy]) => (
+            <article class="feature reveal">
+              <span>{number}</span>
+              <h3>{title}</h3>
+              <p>{copy}</p>
+              <span class="feature-arrow" aria-hidden="true">↗</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="final-cta" id="contact">
+        <p class="eyebrow reveal">Orion arrive sur le terrain</p>
+        <h2 class="reveal">Votre prochain service<br />commence ici.</h2>
+        <p class="reveal">Nous ouvrons les premières démonstrations aux brasseries et restaurants qui veulent participer à la suite.</p>
+        <a class="button button-dark reveal" href="mailto:contact@orion-caisse.fr?subject=Demande%20de%20démonstration%20Orion">Demander une démonstration <span aria-hidden="true">↗</span></a>
+      </section>
+    </main>
+
+    <footer>
+      <a class="brand footer-brand" href="#top"><span class="brand-mark">O</span><span>ORION</span></a>
+      <p>La caisse locale conçue pour le rythme du service.</p>
+      <p>© {new Date().getFullYear()} Orion</p>
+    </footer>
+
+    <script>
+      const header = document.querySelector('[data-header]');
+      const updateHeader = () => header?.classList.toggle('scrolled', window.scrollY > 48);
+      updateHeader();
+      window.addEventListener('scroll', updateHeader, { passive: true });
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.14 });
+      const reveals = [...document.querySelectorAll('.reveal')];
+      reveals.forEach((element) => observer.observe(element));
+
+      const revealPassedSections = () => {
+        reveals.forEach((element) => {
+          if (element.getBoundingClientRect().top < window.innerHeight * 1.1) {
+            element.classList.add('visible');
+            observer.unobserve(element);
+          }
+        });
+      };
+      revealPassedSections();
+      window.addEventListener('scroll', revealPassedSections, { passive: true });
+    </script>
+  </body>
+</html>
