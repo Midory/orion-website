@@ -4,6 +4,8 @@ set -eu
 release_sha="${1:?Pass the validated release SHA}"
 deployment_root="${WEBSITE_DEPLOYMENT_ROOT:-/opt/orion-website}"
 public_url="${WEBSITE_PUBLIC_URL:-https://orion.charsi-marketplace.com}"
+public_host="${public_url#https://}"
+public_host="${public_host%%/*}"
 release_dir="$deployment_root/releases/$release_sha"
 current_link="$deployment_root/current"
 container_name="orion-website"
@@ -46,8 +48,11 @@ docker run -d \
 docker exec "$container_name" wget -qO- http://127.0.0.1/ >/dev/null
 /usr/local/sbin/orion-website-route
 
+# Verify the public hostname, certificate and reverse-proxy route without being
+# held hostage by a stale recursive DNS cache on the deployment host.
 attempt=0
-until curl --fail --silent --show-error --max-time 10 "$public_url/" >/dev/null; do
+until curl --fail --silent --show-error --max-time 10 \
+  --resolve "$public_host:443:127.0.0.1" "$public_url/" >/dev/null; do
   attempt=$((attempt + 1))
   test "$attempt" -lt 12
   sleep 5
