@@ -1,0 +1,11 @@
+[Unit]
+Description=Reconcile the Orion website Caddy route
+
+[Timer]
+OnBootSec=30s
+OnUnitActiveSec=30s
+AccuracySec=5s
+Unit=orion-website-route.service
+
+[Install]
+WantedBy=timers.target

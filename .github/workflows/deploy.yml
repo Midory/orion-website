@@ -1,0 +1,61 @@
+name: deploy-production
+
+on:
+  workflow_run:
+    workflows: [validate]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      release_sha:
+        description: Full SHA currently at the tip of main
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: orion-website-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: >-
+      ${{
+        github.event_name == 'workflow_dispatch' ||
+        (github.event.workflow_run.event == 'push' && github.event.workflow_run.conclusion == 'success')
+      }}
+    environment:
+      name: production
+      url: https://orion.charsi-marketplace.com
+    runs-on: [self-hosted, deploy]
+    timeout-minutes: 15
+    env:
+      RELEASE_SHA: ${{ github.event_name == 'workflow_dispatch' && inputs.release_sha || github.event.workflow_run.head_sha }}
+      WEBSITE_DEPLOYMENT_ROOT: /opt/orion-website
+      WEBSITE_PUBLIC_URL: https://orion.charsi-marketplace.com
+    steps:
+      - name: Check out the validated commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ env.RELEASE_SHA }}
+          persist-credentials: false
+      - name: Prove the release is the current main tip
+        run: |
+          test "${#RELEASE_SHA}" -eq 40
+          printf '%s' "$RELEASE_SHA" | grep -Eq '^[0-9a-f]{40}$'
+          test "$(git rev-parse HEAD)" = "$RELEASE_SHA"
+          test "$(git ls-remote origin refs/heads/main | cut -f1)" = "$RELEASE_SHA"
+      - name: Set up Node.js 24
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 24
+          cache: npm
+      - name: Build the validated static release
+        run: |
+          npm ci
+          npm audit --audit-level=high
+          npm run build
+      - name: Publish atomically and verify HTTPS
+        run: sh scripts/deploy.sh "$RELEASE_SHA"

@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://orion-caisse.fr',
+  site: 'https://orion.charsi-marketplace.com',
   output: 'static',
 });

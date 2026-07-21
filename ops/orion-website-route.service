@@ -1,0 +1,8 @@
+[Unit]
+Description=Keep the Orion website route loaded in the shared Caddy proxy
+After=docker.service network-online.target
+Requires=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/orion-website-route
